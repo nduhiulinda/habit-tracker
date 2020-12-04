@@ -8,28 +8,30 @@
 
 import Foundation
 
-struct CustomizedDetail: Codable {
+struct Template: Codable {
+    var templateName: String
+    var templateType: String
+}
+
+
+struct Record: Codable {
     var detailName: String
     var detailType: String
     var detailValue: String
 }
 
-struct Count: Codable {
-    var value: Double
-    var customizedDetails: [CustomizedDetail]?
-}
-
 struct Day: Codable {
     var date: Date
-    var counts: [Count]
+    var records: [Record]
 }
 
-struct Habit: Codable {
+struct Tracker: Codable {
     var id: Int
     var name: String
+    var templates: [Template]
     var days: [Day]
 }
 
-struct HabitsDataResponse: Codable {
-    var habits: [Habit]
+struct TrackManager: Codable {
+    var trackers: [Tracker]
 }
