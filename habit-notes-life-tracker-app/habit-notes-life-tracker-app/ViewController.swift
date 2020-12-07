@@ -10,11 +10,41 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    let trackersTableView = UITableView()
+    let trackerReuseIdentifier = "TrackerReuseIdentifier"
+    var trackers: [Tracker] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        view.backgroundColor = .white
+        title = "Trackers"
+   
+//        still need to figure out if we're using table view or collection view
+//        trackersTableView.delegate = self
+//        trackersTableView.dataSource = self
+//        trackersTableView.translatesAutoresizingMaskIntoConstraints = false
+//        trackersTableView.register(TrackerTableViewCell.self, forCellReuseIdentifier: trackerReuseIdentifier)
+//        view.addSubview(trackersTableView)
+        
+        getAllTrackers()
+        setupConstraints()
+    }
+    
+    func setupConstraints() {
+        
+    }
+    
+    func getAllTrackers() {
+        NetworkManager.getAllTrackers { trackers in
+            self.trackers = trackers
+//            self.trackersTableView.reloadData()
+        }
     }
 
-
 }
+
+//extension ViewController: UITableViewDelegate {
+//
+//}
 
