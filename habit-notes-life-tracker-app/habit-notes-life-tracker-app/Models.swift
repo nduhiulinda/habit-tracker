@@ -13,10 +13,6 @@ struct Template: Codable {
     var templateType: String
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 9c49d805abe468f84ac6ad1fcf246c2b36ee34cb
 struct Record: Codable {
     var detailName: String
     var detailType: String
