@@ -36,10 +36,12 @@ def create_tracker():
     name = body.get('name')
     templateName = body.get('templateName')
     templateType = body.get('templateType')
-    template = Template(templateName=templateName, templateType=templateType)
+    new_tracker = Tracker(name=name)
+    template = Template(templateName=templateName,
+                        templateType=templateType, tracker_id=new_tracker.id)
     if name is None:
         return failure_response("Name not provided.")
-    new_tracker = Tracker(name=name, template=template)
+
     db.session.add(new_tracker)
     db.session.commit()
     return success_response(new_tracker.serialize())
@@ -72,22 +74,17 @@ def add_record_to_tracker():
         detailName = body.get('detailName')
         detailType = body.get('detailType')
         detailValue = body.get('detailValue')
-        template_id = body.get('template_id')
     except:
         return failure_response("information not enough.")
     tracker = Tracker.query.filter_by(id=tracker_id).first()
-    template = Template.query.filter_by(id=template_id).first()
     if tracker is None:
         return failure_response("tracker not found.")
-    if template is None:
-        template = Template(templateName="habit", templateType="unit")
-        db.session.add(template)
     day = Day.query.filter_by(tracker_id=tracker_id, date=date).first()
     if day is None:
         day = Day(date=date, tracker_id=tracker_id)
         db.session.add(day)
     detail = CustomRecord(detailName=detailName, detailType=detailType,
-                          detailValue=detailValue, template_id=template.id, day_id=day.id)
+                          detailValue=detailValue, day_id=day.id)
     db.session.add(detail)
     day.records.append(detail)
     db.session.commit()

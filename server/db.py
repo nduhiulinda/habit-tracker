@@ -12,7 +12,6 @@ class Tracker(db.Model):
 
     def __init__(self, **kwargs):
         self.name = kwargs.get('name')
-        self.template = kwargs.get('template')
 
     def serialize(self):
         return {
@@ -51,8 +50,6 @@ class CustomRecord(db.Model):
     detailName = db.Column(db.String, nullable=False)
     detailType = db.Column(db.String, nullable=False)
     detailValue = db.Column(db.String, nullable=False)
-    template_id = db.Column(db.Integer, db.ForeignKey('template.id'))
-    template = db.relationship('Template', cascade="delete")
     day_id = db.Column(db.Integer, db.ForeignKey('day.id'))
     day = db.relationship('Day', back_populates="records")
 
@@ -61,7 +58,6 @@ class CustomRecord(db.Model):
         self.detailType = kwargs.get('detailType')
         self.detailValue = kwargs.get('detailValue')
         self.day_id = kwargs.get('day_id')
-        self.template_id = kwargs.get('template_id')
 
     def serialize(self):
         return {
