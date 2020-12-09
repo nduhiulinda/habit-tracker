@@ -64,7 +64,7 @@ def delete_tracker(tracker_id):
     db.session.commit()
     return success_response(tracker.serialize())
 
-
+# add a sinlge tracker to a tracker
 @app.route("/api/trackers/add/", methods=["POST"])
 def add_record_to_tracker():
     body = json.loads(request.data)
@@ -89,6 +89,36 @@ def add_record_to_tracker():
     day.records.append(detail)
     db.session.commit()
     return success_response(tracker.serialize())
+
+# add multiple records to a tracker
+# needs more debugging
+# @app.route("/api/trackers/add/", methods=["POST"])
+# def add_record_to_tracker():
+#     body = json.loads(request.data)
+#     try:
+#         tracker_id = body.get('tracker_id')
+#         date = body.get('date')
+#         # array of details (name, type, value)
+#         details = body.get('details')
+#     except:
+#         return failure_response("information not enough.")
+#     tracker = Tracker.query.filter_by(id=tracker_id).first()
+#     if tracker is None:
+#         return failure_response("tracker not found.")
+#     day = Day.query.filter_by(tracker_id=tracker_id, date=date).first()
+#     if day is None:
+#         day = Day(date=date, tracker_id=tracker_id)
+#         db.session.add(day)
+#     for detail in details:
+#         detailName = detail.get('detailName')
+#         detailType = detail.get('detailType')
+#         detailValue = detail.get('detailValue')
+#         detail = CustomRecord(detailName=detailName, detailType=detailType,
+#                               detailValue=detailValue, day_id=day.id)
+#         db.session.add(detail)
+#         day.records.append(detail)
+#     db.session.commit()
+#     return success_response(tracker.serialize())
 
 
 if __name__ == "__main__":

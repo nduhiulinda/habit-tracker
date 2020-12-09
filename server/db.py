@@ -27,7 +27,6 @@ class Day(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.String, nullable=False)
     tracker_id = db.Column(db.Integer, db.ForeignKey('tracker.id'))
-    template_id = db.Column(db.Integer, db.ForeignKey('template.id'))
     records = db.relationship(
         "CustomRecord", back_populates="day", cascade="delete")
     tracker = db.relationship('Tracker', back_populates="days")
@@ -35,7 +34,6 @@ class Day(db.Model):
     def __init__(self, **kwargs):
         self.date = kwargs.get('date')
         self.tracker_id = kwargs.get('tracker_id')
-        self.template_id = kwargs.get('template_id')
 
     def serialize(self):
         return {
