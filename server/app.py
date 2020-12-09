@@ -34,10 +34,9 @@ def get_all_trackers():
 def create_tracker():
     body = json.loads(request.data)
     name = body.get('name')
-    template_id = body.get('template_id')
-    template = Template.query.filter_by(id=template_id).first()
-    if template is None:
-        return failure_response("template not found.")
+    templateName = body.get('templateName')
+    templateType = body.get('templateType')
+    template = Template(templateName=templateName, templateType=templateType)
     if name is None:
         return failure_response("Name not provided.")
     new_tracker = Tracker(name=name, template=template)

@@ -7,17 +7,18 @@ class Tracker(db.Model):
     __tablename__ = "tracker"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    template = db.Column(db.Integer, db.ForeignKey('template.id'))
+    template = db.relationship("Template", cascade="delete")
     days = db.relationship("Day", back_populates="tracker", cascade="delete")
 
     def __init__(self, **kwargs):
         self.name = kwargs.get('name')
+        self.template = kwargs.get('template')
 
     def serialize(self):
         return {
             'id': self.id,
             'name': self.name,
-            'template': self.templates.serialize(),
+            'template': self.template,
             'days': [d.serialize() for d in self.days]
         }
 
@@ -27,6 +28,7 @@ class Day(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.String, nullable=False)
     tracker_id = db.Column(db.Integer, db.ForeignKey('tracker.id'))
+    template_id = db.Column(db.Integer, db.ForeignKey('template.id'))
     records = db.relationship(
         "CustomRecord", back_populates="day", cascade="delete")
     tracker = db.relationship('Tracker', back_populates="days")
@@ -34,6 +36,7 @@ class Day(db.Model):
     def __init__(self, **kwargs):
         self.date = kwargs.get('date')
         self.tracker_id = kwargs.get('tracker_id')
+        self.template_id = kwargs.get('template_id')
 
     def serialize(self):
         return {
@@ -49,6 +52,7 @@ class CustomRecord(db.Model):
     detailType = db.Column(db.String, nullable=False)
     detailValue = db.Column(db.String, nullable=False)
     template_id = db.Column(db.Integer, db.ForeignKey('template.id'))
+    template = db.relationship('Template', cascade="delete")
     day_id = db.Column(db.Integer, db.ForeignKey('day.id'))
     day = db.relationship('Day', back_populates="records")
 
@@ -72,10 +76,12 @@ class Template(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     templateName = db.Column(db.String, nullable=False)
     templateType = db.Column(db.String, nullable=False)
+    tracker_id = db.Column(db.Integer, db.ForeignKey('tracker.id'))
 
     def __init__(self, **kwargs):
         self.templateName = kwargs.get('templateName')
         self.templateType = kwargs.get('templateType')
+        self.tracker_id = kwargs.get('tracker_id')
 
     def serialize(self):
         return {
