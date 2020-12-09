@@ -15,8 +15,8 @@
 		6DF772CE2578095A00BB502D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF772CD2578095A00BB502D /* SceneDelegate.swift */; };
 		6DF772D02578095A00BB502D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF772CF2578095A00BB502D /* ViewController.swift */; };
 		6DF772D52578095C00BB502D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6DF772D42578095C00BB502D /* Assets.xcassets */; };
-		6DF772D82578095C00BB502D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DF772D62578095C00BB502D /* LaunchScreen.storyboard */; };
 		6DF772E025780A7600BB502D /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF772DF25780A7600BB502D /* Models.swift */; };
+		706D3C75258039BD008FEC2C /* AddTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706D3C74258039BD008FEC2C /* AddTrackerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,9 +28,9 @@
 		6DF772CD2578095A00BB502D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		6DF772CF2578095A00BB502D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		6DF772D42578095C00BB502D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		6DF772D72578095C00BB502D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6DF772D92578095C00BB502D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6DF772DF25780A7600BB502D /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		706D3C74258039BD008FEC2C /* AddTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTrackerViewController.swift; sourceTree = "<group>"; };
 		8B54DC42CA8E29AEADAF8F9B /* Pods-habit-notes-life-tracker-app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-habit-notes-life-tracker-app.debug.xcconfig"; path = "Target Support Files/Pods-habit-notes-life-tracker-app/Pods-habit-notes-life-tracker-app.debug.xcconfig"; sourceTree = "<group>"; };
 		ED682AFB4F5C06991CFC1E71 /* Pods_habit_notes_life_tracker_app.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_habit_notes_life_tracker_app.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F575EA3086552CF6F2F35BEC /* Pods-habit-notes-life-tracker-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-habit-notes-life-tracker-app.release.xcconfig"; path = "Target Support Files/Pods-habit-notes-life-tracker-app/Pods-habit-notes-life-tracker-app.release.xcconfig"; sourceTree = "<group>"; };
@@ -72,12 +72,12 @@
 				6DF772CB2578095A00BB502D /* AppDelegate.swift */,
 				6DF772CD2578095A00BB502D /* SceneDelegate.swift */,
 				6DF772CF2578095A00BB502D /* ViewController.swift */,
+				706D3C74258039BD008FEC2C /* AddTrackerViewController.swift */,
 				6D9CB79B257D6D010078D92B /* NetworkManager.swift */,
 				6D9CB799257D685B0078D92B /* TrackerDetailsViewController.swift */,
 				6DC27DA6257EC74B008F79BC /* AddRecordViewController.swift */,
 				6DF772DF25780A7600BB502D /* Models.swift */,
 				6DF772D42578095C00BB502D /* Assets.xcassets */,
-				6DF772D62578095C00BB502D /* LaunchScreen.storyboard */,
 				6DF772D92578095C00BB502D /* Info.plist */,
 			);
 			path = "habit-notes-life-tracker-app";
@@ -160,7 +160,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6DF772D82578095C00BB502D /* LaunchScreen.storyboard in Resources */,
 				6DF772D52578095C00BB502D /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -219,23 +218,13 @@
 				6DC27DA7257EC74B008F79BC /* AddRecordViewController.swift in Sources */,
 				6DF772D02578095A00BB502D /* ViewController.swift in Sources */,
 				6DF772CC2578095A00BB502D /* AppDelegate.swift in Sources */,
+				706D3C75258039BD008FEC2C /* AddTrackerViewController.swift in Sources */,
 				6DF772CE2578095A00BB502D /* SceneDelegate.swift in Sources */,
 				6DF772E025780A7600BB502D /* Models.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		6DF772D62578095C00BB502D /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6DF772D72578095C00BB502D /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		6DF772DA2578095C00BB502D /* Debug */ = {
@@ -288,7 +277,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.7;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -342,7 +331,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.7;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -359,6 +348,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "habit-notes-life-tracker-app/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -377,6 +367,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "habit-notes-life-tracker-app/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
