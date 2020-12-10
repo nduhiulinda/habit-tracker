@@ -10,9 +10,11 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    let trackersTableView = UITableView()
+    var trackersTableView = UITableView()
+    let cellHeight: CGFloat = 50
     let trackerReuseIdentifier = "TrackerReuseIdentifier"
-    var trackers: [Tracker] = []
+    var exampleTrackers: [OneTrackerCell]!
+//    var trackers: [Tracker] = []
     var addTracker: UIButton!
     
     override func viewDidLoad() {
@@ -20,13 +22,17 @@ class ViewController: UIViewController {
         
         view.backgroundColor = .white
         title = "Trackers"
+        
+        let water = OneTrackerCell(trackerName: "Drinking Water")
+        let weights = OneTrackerCell(trackerName: "Lifting Weights")
+        let sleep = OneTrackerCell(trackerName: "Hours of Sleep")
+        exampleTrackers = [water, weights, sleep]
    
-//        still need to figure out if we're using table view or collection view
-//        trackersTableView.delegate = self
-//        trackersTableView.dataSource = self
-//        trackersTableView.translatesAutoresizingMaskIntoConstraints = false
-//        trackersTableView.register(TrackerTableViewCell.self, forCellReuseIdentifier: trackerReuseIdentifier)
-//        view.addSubview(trackersTableView)
+        trackersTableView.delegate = self
+        trackersTableView.dataSource = self
+        trackersTableView.translatesAutoresizingMaskIntoConstraints = false
+        trackersTableView.register(TrackerTableViewCell.self, forCellReuseIdentifier: trackerReuseIdentifier)
+        view.addSubview(trackersTableView)
         
         // test the addTracker button first -- Leo
         addTracker = UIButton()
@@ -38,7 +44,7 @@ class ViewController: UIViewController {
         view.addSubview(addTracker)
 
         
-        getAllTrackers()
+//        getAllTrackers()
         setupConstraints()
         
     }
@@ -47,8 +53,15 @@ class ViewController: UIViewController {
         NSLayoutConstraint.activate([
             addTracker.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
             addTracker.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            addTracker.heightAnchor.constraint(equalToConstant: 300),
-            addTracker.widthAnchor.constraint(equalToConstant: 300)
+            addTracker.heightAnchor.constraint(equalToConstant: 100),
+            addTracker.widthAnchor.constraint(equalToConstant: 100)
+        ])
+        
+        NSLayoutConstraint.activate([
+            trackersTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            trackersTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            trackersTableView.topAnchor.constraint(equalTo: addTracker.bottomAnchor, constant: 30),
+            trackersTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         
     }
@@ -59,16 +72,31 @@ class ViewController: UIViewController {
         
     }
     
-    func getAllTrackers() {
-        NetworkManager.getAllTrackers { trackers in
-            self.trackers = trackers
+//    func getAllTrackers() {
+//        NetworkManager.getAllTrackers { trackers in
+//            self.trackers = trackers
 //            self.trackersTableView.reloadData()
-        }
-    }
+//        }
+//    }
 
 }
 
-//extension ViewController: UITableViewDelegate {
-//
-//}
+extension ViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return exampleTrackers.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = trackersTableView.dequeueReusableCell(withIdentifier: trackerReuseIdentifier, for: indexPath) as! TrackerTableViewCell
+        let tracker = exampleTrackers[indexPath.row]
+        cell.configure(for: tracker)
+        return cell
+    }
+}
+
+extension ViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return cellHeight
+    }
+}
 
