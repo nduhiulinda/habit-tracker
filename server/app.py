@@ -41,7 +41,7 @@ def create_tracker():
                         templateType=templateType, tracker_id=new_tracker.id)
     if name is None:
         return failure_response("Name not provided.")
-
+    # new_tracker.template = [template]
     db.session.add(new_tracker)
     db.session.commit()
     return success_response(new_tracker.serialize())
