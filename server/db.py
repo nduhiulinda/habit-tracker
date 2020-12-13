@@ -14,10 +14,14 @@ class Tracker(db.Model):
         self.name = kwargs.get('name')
 
     def serialize(self):
+        if self.template == []:
+            template = []
+        else:
+            template = self.template[len(self.template)-1].serialize()
         return {
             'id': self.id,
             'name': self.name,
-            'template': self.template,
+            'template': template,
             'days': [d.serialize() for d in self.days]
         }
 
@@ -41,6 +45,13 @@ class Day(db.Model):
             'records': [r.serialize() for r in self.records],
         }
 
+    def serialize2(self):
+        return {
+            'date': self.date,
+            'tracker': self.tracker.name,
+            'records': [r.serialize() for r in self.records],
+        }
+
 
 class CustomRecord(db.Model):
     __tablename__ = 'customrecord'
@@ -49,7 +60,7 @@ class CustomRecord(db.Model):
     detailType = db.Column(db.String, nullable=False)
     detailValue = db.Column(db.String, nullable=False)
     day_id = db.Column(db.Integer, db.ForeignKey('day.id'))
-    day = db.relationship('Day', back_populates="records")
+    day = db.relationship('Day', back_populates="records", cascade="delete")
 
     def __init__(self, **kwargs):
         self.detailName = kwargs.get('detailName')
