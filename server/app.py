@@ -34,15 +34,21 @@ def get_all_trackers():
 def create_tracker():
     body = json.loads(request.data)
     name = body.get('name')
-    templateName = body.get('templateName')
-    templateType = body.get('templateType')
+    templates = body.get('templates')
+    if name is None or templates is None:
+        return failure_response("Name or templates not provided.")
     new_tracker = Tracker(name=name)
-    template = Template(templateName=templateName,
-                        templateType=templateType, tracker_id=new_tracker.id)
-    if name is None:
-        return failure_response("Name not provided.")
-
     db.session.add(new_tracker)
+
+    for template in templates:
+        templateName = template.get('templateName')
+        templateType = template.get('templateType')
+        if templateName is None or templateType is None:
+            return failure_response("templateName or templateType not provided.")
+        template = Template(templateName=templateName, templateType=templateType,
+                            tracker_id=new_tracker.id)
+        db.session.add(template)
+        new_tracker.templates.append(template)
     db.session.commit()
     return success_response(new_tracker.serialize())
 
@@ -64,16 +70,24 @@ def delete_tracker(tracker_id):
     db.session.commit()
     return success_response(tracker.serialize())
 
-# add a sinlge tracker to a tracker
+
+@app.route("/api/record/<int:record_id>/")
+def get_record(record_id):
+    record = CustomRecord.query.filter_by(id=record_id).first()
+    if record is None:
+        return failure_response("Record not found.")
+    return success_response(record.serialize())
+
+# add multiple records to a tracker
+# needs more debugging
 @app.route("/api/trackers/add/", methods=["POST"])
 def add_record_to_tracker():
     body = json.loads(request.data)
     try:
         tracker_id = body.get('tracker_id')
         date = body.get('date')
-        detailName = body.get('detailName')
-        detailType = body.get('detailType')
-        detailValue = body.get('detailValue')
+        # array of details (name, type, value)
+        details = body.get('details')
     except:
         return failure_response("information not enough.")
     tracker = Tracker.query.filter_by(id=tracker_id).first()
@@ -83,43 +97,53 @@ def add_record_to_tracker():
     if day is None:
         day = Day(date=date, tracker_id=tracker_id)
         db.session.add(day)
-    detail = CustomRecord(detailName=detailName, detailType=detailType,
-                          detailValue=detailValue, day_id=day.id)
-    db.session.add(detail)
-    day.records.append(detail)
+    for detail in details:
+        detailName = detail.get('detailName')
+        detailType = detail.get('detailType')
+        detailValue = detail.get('detailValue')
+        detail = CustomRecord(detailName=detailName, detailType=detailType,
+                              detailValue=detailValue, day_id=day.id)
+        db.session.add(detail)
+        day.records.append(detail)
     db.session.commit()
     return success_response(tracker.serialize())
 
-# add multiple records to a tracker
-# needs more debugging
-# @app.route("/api/trackers/add/", methods=["POST"])
-# def add_record_to_tracker():
-#     body = json.loads(request.data)
-#     try:
-#         tracker_id = body.get('tracker_id')
-#         date = body.get('date')
-#         # array of details (name, type, value)
-#         details = body.get('details')
-#     except:
-#         return failure_response("information not enough.")
-#     tracker = Tracker.query.filter_by(id=tracker_id).first()
-#     if tracker is None:
-#         return failure_response("tracker not found.")
-#     day = Day.query.filter_by(tracker_id=tracker_id, date=date).first()
-#     if day is None:
-#         day = Day(date=date, tracker_id=tracker_id)
-#         db.session.add(day)
-#     for detail in details:
-#         detailName = detail.get('detailName')
-#         detailType = detail.get('detailType')
-#         detailValue = detail.get('detailValue')
-#         detail = CustomRecord(detailName=detailName, detailType=detailType,
-#                               detailValue=detailValue, day_id=day.id)
-#         db.session.add(detail)
-#         day.records.append(detail)
-#     db.session.commit()
-#     return success_response(tracker.serialize())
+
+@app.route("/api/record/<int:record_id>/", methods=["DELETE"])
+def delete_record_from_tracker(record_id):
+    record = CustomRecord.query.filter_by(id=record_id).first()
+    if record is None:
+        failure_response("Record not found.")
+    db.session.delete(record)
+    db.session.commit()
+    return success_response(record.serialize())
+
+
+@app.route("/api/day/<string:date>/")
+def get_day_records(date):
+    days = Day.query.filter_by(date=date).all()
+    if days == []:
+        return failure_response("No records found from "+date)
+    data = []
+    for d in days:
+        data.append(d.serialize2())
+    return success_response(data)
+
+
+@app.route("/api/trackers/<int:tracker_id>/day/<string:date>/")
+def get_day_records_from_tracker(tracker_id, date):
+    days = Day.query.filter_by(tracker_id=tracker_id, date=date).all()
+    if days == []:
+        return failure_response("No records found from "+date)
+    data = []
+    for d in days:
+        data.append(d.serialize())
+    return success_response(data)
 
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
+
+# if __name__ == "__main__":
+#     port = int(os.environ.get("PORT", 5000))
+#     app.run(host='0.0.0.0', port=port)
