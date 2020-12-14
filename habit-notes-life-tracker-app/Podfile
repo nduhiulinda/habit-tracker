@@ -7,4 +7,5 @@ target 'habit-notes-life-tracker-app' do
 
   # Pods for habit-notes-life-tracker-app
   pod 'Alamofire'
+  pod 'DropDown'
 end

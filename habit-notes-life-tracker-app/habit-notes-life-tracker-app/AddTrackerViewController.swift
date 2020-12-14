@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DropDown
 
 class AddTrackerViewController: UIViewController {
     var exitButton: UIButton!
@@ -21,11 +22,14 @@ class AddTrackerViewController: UIViewController {
 //    var addDetailButton: UIButton!
     var detailInputLabel1: UILabel!
     var detailInput1: UITextField!
-//    var detailInput1Type:
+    var detailInput1TypeView: UIButton!
+    var detailInput1Type: DropDown!
     var detailInput2: UITextField!
-//    var detailInput1Type:
+    var detailInput2TypeView: UIButton!
+    var detailInput2Type: DropDown!
     var detailInput3: UITextField!
-//    var detailInput3Type:
+    var detailInput3TypeView: UIButton!
+    var detailInput3Type: DropDown!
     var saveTrackerButton: UIButton!
 
 //    var alertLabel: UILabel!
@@ -36,6 +40,8 @@ class AddTrackerViewController: UIViewController {
     let darkBrownColor = UIColor(red: 0.29, green: 0.19, blue: 0.16, alpha: 1.00)
     
     let fontSize = UIFont.systemFont(ofSize: 13, weight: .medium)
+    
+    let dropDownData = ["Text", "Number", "Note"]
 
 
     override func viewDidLoad() {
@@ -59,7 +65,7 @@ class AddTrackerViewController: UIViewController {
         viewTitle = UILabel()
         viewTitle.text = "Add Tracker"
         viewTitle.textColor = darkGrayColor
-        viewTitle.font = UIFont.systemFont(ofSize: 25.0, weight: .bold)
+        viewTitle.font = UIFont.systemFont(ofSize: 40, weight: .bold)
         viewTitle.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(viewTitle)
         
@@ -143,6 +149,19 @@ class AddTrackerViewController: UIViewController {
         detailInput1.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(detailInput1)
         
+        detailInput1TypeView = UIButton()
+        detailInput1TypeView.setTitle("Select Detail Type:", for: .normal)
+        detailInput1TypeView.setTitleColor(darkGrayColor, for: .normal)
+        detailInput1TypeView.titleLabel?.font = fontSize
+        detailInput1TypeView.layer.borderColor = lightGrayColor.cgColor
+        detailInput1TypeView.layer.borderWidth = 1
+        detailInput1TypeView.layer.cornerRadius = 18
+        detailInput1TypeView.addTarget(self, action: #selector(dropdown1Appears), for: .touchUpInside)
+        detailInput1TypeView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(detailInput1TypeView)
+        
+        detailInput1Type = DropDown()
+        
         detailInput2 = UITextField()
         detailInput2.placeholder = "Detail 2 Name (ex. Duration)"
         detailInput2.font = fontSize
@@ -155,6 +174,19 @@ class AddTrackerViewController: UIViewController {
         detailInput2.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(detailInput2)
         
+        detailInput2TypeView = UIButton()
+        detailInput2TypeView.setTitle("Select Detail Type:", for: .normal)
+        detailInput2TypeView.setTitleColor(darkGrayColor, for: .normal)
+        detailInput2TypeView.titleLabel?.font = fontSize
+        detailInput2TypeView.layer.borderColor = lightGrayColor.cgColor
+        detailInput2TypeView.layer.borderWidth = 1
+        detailInput2TypeView.layer.cornerRadius = 18
+        detailInput2TypeView.addTarget(self, action: #selector(dropdown2Appears), for: .touchUpInside)
+        detailInput2TypeView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(detailInput2TypeView)
+        
+        detailInput2Type = DropDown()
+        
         detailInput3 = UITextField()
         detailInput3.placeholder = "Detail 3 Name (ex. Calories Burned)"
         detailInput3.font = fontSize
@@ -166,6 +198,19 @@ class AddTrackerViewController: UIViewController {
         detailInput3.clearsOnBeginEditing = true
         detailInput3.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(detailInput3)
+        
+        detailInput3TypeView = UIButton()
+        detailInput3TypeView.setTitle("Select Detail Type:", for: .normal)
+        detailInput3TypeView.setTitleColor(darkGrayColor, for: .normal)
+        detailInput3TypeView.titleLabel?.font = fontSize
+        detailInput3TypeView.layer.borderColor = lightGrayColor.cgColor
+        detailInput3TypeView.layer.borderWidth = 1
+        detailInput3TypeView.layer.cornerRadius = 18
+        detailInput3TypeView.addTarget(self, action: #selector(dropdown3Appears), for: .touchUpInside)
+        detailInput3TypeView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(detailInput3TypeView)
+               
+        detailInput3Type = DropDown()
         
         saveTrackerButton = UIButton()
         saveTrackerButton.setTitle("Save New Tracker", for: .normal)
@@ -195,12 +240,12 @@ class AddTrackerViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             viewTitle.topAnchor.constraint(equalTo: exitButton.bottomAnchor, constant: 10),
-            viewTitle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 35)
+            viewTitle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20)
         ])
         
         NSLayoutConstraint.activate([
             trackerInputLabel.topAnchor.constraint(equalTo: viewTitle.bottomAnchor, constant: 30),
-            trackerInputLabel.leadingAnchor.constraint(equalTo: viewTitle.leadingAnchor, constant: 15)
+            trackerInputLabel.leadingAnchor.constraint(equalTo: viewTitle.leadingAnchor, constant: 10)
         ])
         
         NSLayoutConstraint.activate([
@@ -244,26 +289,47 @@ class AddTrackerViewController: UIViewController {
         NSLayoutConstraint.activate([
             detailInput1.topAnchor.constraint(equalTo: detailInputLabel1.bottomAnchor, constant: 10),
             detailInput1.leadingAnchor.constraint(equalTo: trackerInputLabel.leadingAnchor),
-            detailInput1.trailingAnchor.constraint(equalTo: trackerInput.trailingAnchor, constant: -125),
+            detailInput1.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -5),
             detailInput1.heightAnchor.constraint(equalToConstant: 40)
         ])
         
         NSLayoutConstraint.activate([
+            detailInput1TypeView.topAnchor.constraint(equalTo: detailInput1.topAnchor),
+            detailInput1TypeView.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 5),
+            detailInput1TypeView.heightAnchor.constraint(equalToConstant: 40),
+            detailInput1TypeView.trailingAnchor.constraint(equalTo: trackerInput.trailingAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
             detailInput2.topAnchor.constraint(equalTo: detailInput1.bottomAnchor, constant: 7),
-            detailInput2.leadingAnchor.constraint(equalTo: trackerInputLabel.leadingAnchor),
-            detailInput2.trailingAnchor.constraint(equalTo: trackerInput.trailingAnchor, constant: -125),
+            detailInput2.leadingAnchor.constraint(equalTo: detailInput1.leadingAnchor),
+            detailInput2.trailingAnchor.constraint(equalTo: detailInput1.trailingAnchor),
             detailInput2.heightAnchor.constraint(equalToConstant: 40)
         ])
         
         NSLayoutConstraint.activate([
+            detailInput2TypeView.topAnchor.constraint(equalTo: detailInput2.topAnchor),
+            detailInput2TypeView.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 5),
+            detailInput2TypeView.heightAnchor.constraint(equalToConstant: 40),
+            detailInput2TypeView.trailingAnchor.constraint(equalTo: trackerInput.trailingAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
             detailInput3.topAnchor.constraint(equalTo: detailInput2.bottomAnchor, constant: 7),
-            detailInput3.leadingAnchor.constraint(equalTo: trackerInputLabel.leadingAnchor),
-            detailInput3.trailingAnchor.constraint(equalTo: trackerInput.trailingAnchor, constant: -125),
+            detailInput3.leadingAnchor.constraint(equalTo: detailInput1.leadingAnchor),
+            detailInput3.trailingAnchor.constraint(equalTo: detailInput1.trailingAnchor),
             detailInput3.heightAnchor.constraint(equalToConstant: 40)
         ])
         
         NSLayoutConstraint.activate([
-            saveTrackerButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
+            detailInput3TypeView.topAnchor.constraint(equalTo: detailInput3.topAnchor),
+            detailInput3TypeView.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 5),
+            detailInput3TypeView.heightAnchor.constraint(equalToConstant: 40),
+            detailInput3TypeView.trailingAnchor.constraint(equalTo: trackerInput.trailingAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            saveTrackerButton.topAnchor.constraint(equalTo: detailInput3.bottomAnchor, constant: 100),
             saveTrackerButton.heightAnchor.constraint(equalToConstant: 60),
             saveTrackerButton.widthAnchor.constraint(equalToConstant: 280),
             saveTrackerButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
@@ -299,6 +365,36 @@ class AddTrackerViewController: UIViewController {
         yesGoal.setTitleColor(darkGrayColor, for: .normal)
         
         goalQuantity.isHidden = true
+    }
+    
+    @objc func dropdown1Appears() {
+        detailInput1Type.dataSource = dropDownData
+        detailInput1Type.anchorView = detailInput1TypeView
+        detailInput1Type.bottomOffset = CGPoint(x:0, y:40)
+        detailInput1Type.show()
+        detailInput1Type.selectionAction = { [unowned self] (index: Int, item: String) in
+            self.detailInput1TypeView.setTitle(item, for: .normal)
+        }
+    }
+    
+    @objc func dropdown2Appears() {
+        detailInput2Type.dataSource = dropDownData
+        detailInput2Type.anchorView = detailInput2TypeView
+        detailInput2Type.bottomOffset = CGPoint(x:0, y:40)
+        detailInput2Type.show()
+        detailInput2Type.selectionAction = { [unowned self] (index: Int, item: String) in
+            self.detailInput2TypeView.setTitle(item, for: .normal)
+        }
+    }
+    
+    @objc func dropdown3Appears() {
+        detailInput3Type.dataSource = dropDownData
+        detailInput3Type.anchorView = detailInput3TypeView
+        detailInput3Type.bottomOffset = CGPoint(x:0, y:40)
+        detailInput3Type.show()
+        detailInput3Type.selectionAction = { [unowned self] (index: Int, item: String) in
+            self.detailInput3TypeView.setTitle(item, for: .normal)
+        }
     }
     
     @objc func saveTapped() {
