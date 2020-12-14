@@ -7,21 +7,17 @@ class Tracker(db.Model):
     __tablename__ = "tracker"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    template = db.relationship("Template", cascade="delete")
+    templates = db.relationship("Template", back_populates="tracker", cascade="delete")
     days = db.relationship("Day", back_populates="tracker", cascade="delete")
 
     def __init__(self, **kwargs):
         self.name = kwargs.get('name')
 
     def serialize(self):
-        if self.template == []:
-            template = []
-        else:
-            template = self.template[len(self.template)-1].serialize()
         return {
             'id': self.id,
             'name': self.name,
-            'template': template,
+            'templates': [t.serialize() for t in self.templates],
             'days': [d.serialize() for d in self.days]
         }
 
@@ -30,9 +26,8 @@ class Day(db.Model):
     __tablename__ = 'day'
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.String, nullable=False)
+    records = db.relationship("CustomRecord", back_populates="day", cascade="delete")
     tracker_id = db.Column(db.Integer, db.ForeignKey('tracker.id'))
-    records = db.relationship(
-        "CustomRecord", back_populates="day", cascade="delete")
     tracker = db.relationship('Tracker', back_populates="days")
 
     def __init__(self, **kwargs):
@@ -82,6 +77,7 @@ class Template(db.Model):
     templateName = db.Column(db.String, nullable=False)
     templateType = db.Column(db.String, nullable=False)
     tracker_id = db.Column(db.Integer, db.ForeignKey('tracker.id'))
+    tracker = db.relationship('Tracker', back_populates="templates")
 
     def __init__(self, **kwargs):
         self.templateName = kwargs.get('templateName')

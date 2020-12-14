@@ -34,15 +34,21 @@ def get_all_trackers():
 def create_tracker():
     body = json.loads(request.data)
     name = body.get('name')
-    templateName = body.get('templateName')
-    templateType = body.get('templateType')
+    templates = body.get('templates')
+    if name is None or templates is None:
+        return failure_response("Name or templates not provided.")
     new_tracker = Tracker(name=name)
-    template = Template(templateName=templateName,
-                        templateType=templateType, tracker_id=new_tracker.id)
-    if name is None:
-        return failure_response("Name not provided.")
-    # new_tracker.template = [template]
     db.session.add(new_tracker)
+
+    for template in templates:
+        templateName = template.get('templateName')
+        templateType = template.get('templateType')
+        if templateName is None or templateType is None:
+            return failure_response("templateName or templateType not provided.")
+        template = Template(templateName=templateName, templateType=templateType,
+                            tracker_id=new_tracker.id)
+        db.session.add(template)
+        new_tracker.templates.append(template)
     db.session.commit()
     return success_response(new_tracker.serialize())
 
@@ -99,17 +105,6 @@ def add_record_to_tracker():
                               detailValue=detailValue, day_id=day.id)
         db.session.add(detail)
         day.records.append(detail)
-
-    templateName = body.get('templateName')
-    templateType = body.get('templateType')
-    if templateName == None and templateType == None:
-        db.session.commit()
-        return success_response(tracker.serialize())
-    # template provided
-    template = Template(templateName=templateName, templateType=templateType,
-                        tracker_id=tracker_id)
-    db.session.add(template)
-    tracker.template.append(template)
     db.session.commit()
     return success_response(tracker.serialize())
 
@@ -146,9 +141,9 @@ def get_day_records_from_tracker(tracker_id, date):
     return success_response(data)
 
 
-# if __name__ == "__main__":
-#     app.run(host="0.0.0.0", port=5000, debug=True)
-
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host="0.0.0.0", port=5000, debug=True)
+
+# if __name__ == "__main__":
+#     port = int(os.environ.get("PORT", 5000))
+#     app.run(host='0.0.0.0', port=port)
