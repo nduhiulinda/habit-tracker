@@ -11,56 +11,63 @@ import UIKit
 class ViewController: UIViewController {
 
     var trackersTableView = UITableView()
-    let cellHeight: CGFloat = 50
+    let cellHeight: CGFloat = 60
     let trackerReuseIdentifier = "TrackerReuseIdentifier"
-    var exampleTrackers: [OneTrackerCell]!
-//    var trackers: [Tracker] = []
-    var addTracker: UIButton!
+    var trackers: [Tracker] = []
+    var addTrackerBar: UIButton!
+    var addTracker: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
         title = "Trackers"
-        
-        let water = OneTrackerCell(trackerName: "Drinking Water")
-        let weights = OneTrackerCell(trackerName: "Lifting Weights")
-        let sleep = OneTrackerCell(trackerName: "Hours of Sleep")
-        exampleTrackers = [water, weights, sleep]
    
         trackersTableView.delegate = self
         trackersTableView.dataSource = self
+        trackersTableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         trackersTableView.translatesAutoresizingMaskIntoConstraints = false
         trackersTableView.register(TrackerTableViewCell.self, forCellReuseIdentifier: trackerReuseIdentifier)
         view.addSubview(trackersTableView)
         
-        // test the addTracker button first -- Leo
-        addTracker = UIButton()
-        addTracker.translatesAutoresizingMaskIntoConstraints = false
-        addTracker.setTitle("Add Tracker", for: .normal)
-        addTracker.setTitleColor(.systemBlue, for: .normal)
+        addTrackerBar = UIButton()
+        addTrackerBar.backgroundColor = UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1.00)
+        addTrackerBar.addTarget(self, action: #selector(addTrackerViewController), for: .touchUpInside)
+        addTrackerBar.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(addTrackerBar)
         
-        addTracker.addTarget(self, action: #selector(addTrackerViewController), for: .touchUpInside)
+        // test the addTracker button first -- Leo
+        addTracker = UIImageView()
+        addTracker.image = UIImage(named: "Union")
+        addTracker.contentMode = .scaleAspectFit
+        addTracker.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(addTracker)
 
         
-//        getAllTrackers()
+        getAllTrackers()
         setupConstraints()
         
     }
     
     func setupConstraints() {
+        
         NSLayoutConstraint.activate([
-            addTracker.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
-            addTracker.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            addTracker.heightAnchor.constraint(equalToConstant: 100),
-            addTracker.widthAnchor.constraint(equalToConstant: 100)
+            addTrackerBar.heightAnchor.constraint(equalToConstant: 60),
+            addTrackerBar.widthAnchor.constraint(equalTo: view.widthAnchor),
+            addTrackerBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            trackersTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            trackersTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            trackersTableView.topAnchor.constraint(equalTo: addTracker.bottomAnchor, constant: 30),
+            addTracker.centerYAnchor.constraint(equalTo: addTrackerBar.centerYAnchor),
+            addTracker.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            addTracker.heightAnchor.constraint(equalToConstant: 20),
+            addTracker.widthAnchor.constraint(equalToConstant: 20)
+        ])
+        
+        NSLayoutConstraint.activate([
+            trackersTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+            trackersTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+            trackersTableView.topAnchor.constraint(equalTo: addTracker.bottomAnchor, constant: 60),
             trackersTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         
@@ -68,27 +75,27 @@ class ViewController: UIViewController {
     
     @objc func addTrackerViewController() {
         let vc = AddTrackerViewController()
-        navigationController?.pushViewController(vc, animated: true)
+        present(vc, animated: true, completion: nil)
         
     }
     
-//    func getAllTrackers() {
-//        NetworkManager.getAllTrackers { trackers in
-//            self.trackers = trackers
-//            self.trackersTableView.reloadData()
-//        }
-//    }
+    func getAllTrackers() {
+        NetworkManager.getAllTrackers { trackers in
+            self.trackers = trackers
+            self.trackersTableView.reloadData()
+        }
+    }
 
 }
 
 extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return exampleTrackers.count
+        return trackers.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = trackersTableView.dequeueReusableCell(withIdentifier: trackerReuseIdentifier, for: indexPath) as! TrackerTableViewCell
-        let tracker = exampleTrackers[indexPath.row]
+        let tracker = trackers[indexPath.row]
         cell.configure(for: tracker)
         return cell
     }

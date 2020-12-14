@@ -20,7 +20,7 @@ struct Record: Codable {
 }
 
 struct Day: Codable {
-    var date: Date
+    var date: String
     var records: [Record]
 }
 
@@ -31,6 +31,7 @@ struct Tracker: Codable {
     var days: [Day]
 }
 
-struct TrackManager: Codable {
-    var trackers: [Tracker]
+struct TrackerDataResponse: Codable {
+    var success: Bool
+    var data: [Tracker]
 }

@@ -11,7 +11,7 @@ import Alamofire
 
 class NetworkManager {
     
-    static let host = "http://localhost:5000/api/"
+    static let host = "https://cs1998trackers.herokuapp.com/api"
     
     static func getAllTrackers(completion: @escaping ([Tracker]) -> Void) {
         let endpoint = "\(host)/trackers/"
@@ -19,9 +19,11 @@ class NetworkManager {
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
-                if let trackersData = try? jsonDecoder.decode(TrackManager.self, from: data) {
-                    let trackers = trackersData.trackers
-                    completion(trackers)
+                if let trackersData = try? jsonDecoder.decode(TrackerDataResponse.self, from: data) {
+                    if trackersData.success {
+                        let trackers = trackersData.data
+                        completion(trackers)
+                    }
                 }
             case .failure(let error):
                 print(error.localizedDescription)
@@ -48,5 +50,3 @@ class NetworkManager {
         }
     }
 }
-
-
