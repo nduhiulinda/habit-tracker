@@ -41,6 +41,7 @@ class AddTrackerViewController: UIViewController {
     
     let fontSize = UIFont.systemFont(ofSize: 13, weight: .medium)
     
+//  Information about Drop Down module learned from: https://www.swiftdevcenter.com/drop-down-list-ios-swift-5/
     let dropDownData = ["Text", "Number", "Note"]
 
 
