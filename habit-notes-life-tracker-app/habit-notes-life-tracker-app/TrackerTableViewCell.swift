@@ -14,14 +14,21 @@ class TrackerTableViewCell: UITableViewCell {
     var trackerName: UILabel!
     var logButton: UIButton!
 
+    let lightGrayColor = UIColor(red: 0.77, green: 0.77, blue: 0.77, alpha: 1.00)
+    let darkGrayColor = UIColor(red: 0.29, green: 0.29, blue: 0.29, alpha: 1.00)
+    let lightBrownColor = UIColor(red: 0.87, green: 0.83, blue: 0.82, alpha: 1.00)
+    let darkBrownColor = UIColor(red: 0.29, green: 0.19, blue: 0.16, alpha: 1.00)
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         selectionStyle = .none
         
         trackerCardView = UIView()
-        trackerCardView.backgroundColor = UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1.00)
+        trackerCardView.backgroundColor = .white
         trackerCardView.layer.cornerRadius = 18
+        trackerCardView.layer.borderColor = lightBrownColor.cgColor
+        trackerCardView.layer.borderWidth = 1
         trackerCardView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(trackerCardView)
         
@@ -31,7 +38,7 @@ class TrackerTableViewCell: UITableViewCell {
         
         logButton = UIButton()
         logButton.setTitle("Log", for: .normal)
-        logButton.backgroundColor = UIColor(red: 0.77, green: 0.77, blue: 0.77, alpha: 1.00)
+        logButton.backgroundColor = darkBrownColor
         logButton.setTitleColor(.white, for: .normal)
         logButton.layer.cornerRadius = 18
         logButton.translatesAutoresizingMaskIntoConstraints = false

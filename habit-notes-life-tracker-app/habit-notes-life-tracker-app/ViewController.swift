@@ -18,6 +18,12 @@ class ViewController: UIViewController {
     var addTrackerBar: UIButton!
     var addTracker: UIImageView!
     
+    let lightBrownColor = UIColor(red: 0.87, green: 0.83, blue: 0.82, alpha: 1.00)
+    
+    override func viewWillAppear(_ animated: Bool) {
+        getAllTrackers()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,7 +38,7 @@ class ViewController: UIViewController {
         view.addSubview(trackersTableView)
         
         addTrackerBar = UIButton()
-        addTrackerBar.backgroundColor = UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1.00)
+        addTrackerBar.backgroundColor = lightBrownColor
         addTrackerBar.addTarget(self, action: #selector(addTrackerViewController), for: .touchUpInside)
         addTrackerBar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(addTrackerBar)
@@ -44,8 +50,6 @@ class ViewController: UIViewController {
         addTracker.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(addTracker)
 
-        
-        getAllTrackers()
         setupConstraints()
         
     }
@@ -76,6 +80,7 @@ class ViewController: UIViewController {
     
     @objc func addTrackerViewController() {
         let vc = AddTrackerViewController()
+        vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true, completion: nil)
         
     }

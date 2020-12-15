@@ -232,7 +232,7 @@ class AddTrackerViewController: UIViewController {
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            exitButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
+            exitButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             exitButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
             exitButton.heightAnchor.constraint(equalToConstant: 40),
             exitButton.widthAnchor.constraint(equalToConstant: 40)
@@ -398,8 +398,25 @@ class AddTrackerViewController: UIViewController {
     }
     
     @objc func saveTapped() {
-        // save tracker details
-          }
-
-
+        var templates = [Template]()
+        if let template1Name = detailInput1.text, let template1Type = detailInput1TypeView.currentTitle {
+            var detailOne = Template(templateName: template1Name, templateType: template1Type)
+            templates.append(detailOne)
+            }
+        if let template2Name = detailInput2.text, let template2Type = detailInput2TypeView.currentTitle {
+            var detailTwo = Template(templateName: template2Name, templateType: template2Type)
+            templates.append(detailTwo)
+            }
+        if let template3Name = detailInput3.text, let template3Type = detailInput3TypeView.currentTitle {
+            var detailThree = Template(templateName: template3Name, templateType: template3Type)
+            templates.append(detailThree)
+            }
+            
+        
+        if let name = trackerInput.text {
+            NetworkManager.addTracker(name: name, templates: templates) {
+                self.dismiss(animated: true)
+            }
+        }
+    }
 }
