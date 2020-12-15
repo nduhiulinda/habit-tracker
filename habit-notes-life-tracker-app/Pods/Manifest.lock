@@ -1,20 +1,28 @@
 PODS:
   - Alamofire (5.4.0)
   - DropDown (2.3.13)
+  - PNChart (0.8.9):
+    - UICountingLabel (~> 1.2.0)
+  - UICountingLabel (1.2.0)
 
 DEPENDENCIES:
   - Alamofire
   - DropDown
+  - PNChart
 
 SPEC REPOS:
   trunk:
     - Alamofire
     - DropDown
+    - PNChart
+    - UICountingLabel
 
 SPEC CHECKSUMS:
   Alamofire: 3b6a534a3df22db367e4dedeeca73d1ddfcf0e2f
   DropDown: 8a2116376c1981888557f72ec2ffc9a5e0e456ec
+  PNChart: 84774d225c2126ded6c93d4dbe6ae98c3a73c2d2
+  UICountingLabel: 1db4e7d023e1762171eb226d6dff47a7a84f27aa
 
-PODFILE CHECKSUM: a96ee042e72c3a9b25abf23f925ed1f42d4cee27
+PODFILE CHECKSUM: 15015cc44f7bb0ff3d99a39eccb1b180f830e623
 
 COCOAPODS: 1.10.0
